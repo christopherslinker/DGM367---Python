@@ -1,0 +1,131 @@
+//START GEO
+proc bodyBuilder(){
+
+    polySphere - 
+        radius 1;
+
+    
+    polySphere - 
+        radius .75; 
+        move -r 0 1.5 0;
+        
+    polySphere - 
+        radius 0.5; 
+        move -r 0 2.5 0;
+        
+    select - all;
+    
+    polyUnite;
+    
+    CenterPivot;
+    
+    //polyMergeVertex - d 0.005;
+    //This was merging verts together but it stopped for some reason.
+    
+    DeleteHistory;
+
+    polySmooth;
+    
+    rename "polySurface1" "Body_Geo";
+    
+} 
+
+proc noseBuilder(){
+    polyCylinder -
+        radius 0.07;
+        scale 1 .25 1;
+        move 0 2.5 0.5;
+        rotate 90 0 0;
+        
+    rename "pCylinder1" "Nose_Geo";
+    
+    select -r "Nose_Geo";
+    select -r Nose_Geo.f[21];
+    scale -ws -r -p -7.45058e-09cm 2.5cm 0.75cm 0.25776 0.25776 0.25776;
+    
+    select -r "Nose_Geo";
+    
+    polySmooth;
+    
+    CenterPivot;
+    
+    DeleteHistory;
+
+}
+
+proc faceBuilder(){
+    polySphere - 
+        radius 0.05; 
+        move -0.067 2.572 0.473;
+        scale 1 1 .5;
+        
+    polySphere -
+         radius 0.05; 
+        move 0.067 2.572 0.473;
+        scale 1 1 .5;
+        
+    select -r "pSphere1";
+    rename "pSphere1" "Eye_Right_Geo";
+    
+    select -r "pSphere2";
+    rename "pSphere2" "Eye_Left_Geo";
+    
+    select -r Eye_Right_Geo Eye_Left_Geo;
+    DeleteHistory;
+    
+    select -r Eye_Right_Geo Eye_Left_Geo;
+    group;
+    rename "group1" "Eyes_Geo";
+    
+
+    
+    
+    
+        
+}
+
+proc groupGeo(){
+    select -r Body_Geo Nose_Geo Eye_Geo ;
+    group;
+    rename "group1" "Geo";
+
+}
+
+
+
+
+
+bodyBuilder();
+
+noseBuilder();
+
+faceBuilder();
+
+groupGeo();
+
+//END OF GEO
+//START OF SKELETON
+
+proc skeletonBuilder(){
+
+    joint -
+        radius 0.5;
+
+    joint -
+        radius 0.5;
+    
+    joint -
+        radius 0.5;
+        
+    joint -
+        radius 0.5;
+
+}
+
+skeletonBuilder();
+
+//FIGURE OUT HOW TO GROUP GEO WITHOUT GROUPING THE BONES
+//FIX VERTEX MERGE ON BODY
+//CREATE BONES
+//BIND TO SKIN
+
