@@ -75,33 +75,49 @@ proc faceBuilder(){
     
     select -r Eye_Right_Geo Eye_Left_Geo;
     group;
-    rename "group1" "Eyes_Geo";
-    
+    rename "group1" "Eyes_Geo";      
+}
 
-    
-    
-    
+proc topHatBuilder(){
+    polyCylinder -
+            radius .4;
+            scale 1 .5 1;
+            move 0 3.4 0;
+            rotate 0 0 0;
         
+        polyCylinder -
+            radius .4;
+            scale 1.5 .05 1.5;
+            move 0 2.85 0;
+            rotate 0 0 0;
+            ;
+        select -r pCylinder1 ;
+        rename "pCylinder1" "Hat_Top_Geo";
+        
+        select -r pCylinder2;
+        rename "pCylinder2" "Hat_Brim_Geo";
+        
+        select -r Hat_Top_Geo Hat_Brim_Geo;
+
+        DeleteHistory;
+        
+        Group;
+        rename "group1" "Hat_Geo";
+        
+        CenterPivot;
+        
+        select -cl;
 }
 
-proc groupGeo(){
-    select -r Body_Geo Nose_Geo Eye_Geo ;
-    group;
-    rename "group1" "Geo";
 
+proc parentGeo(){
+    select -r Hat_Geo Eyes_Geo Nose_Geo ;
+    parent Hat_Geo Body_Geo ;
+    parent Eyes_Geo Body_Geo ;
+    parent Nose_Geo Body_Geo ;
+    
+    select -cl;
 }
-
-
-
-
-
-bodyBuilder();
-
-noseBuilder();
-
-faceBuilder();
-
-groupGeo();
 
 //END OF GEO
 //START OF SKELETON
@@ -110,22 +126,48 @@ proc skeletonBuilder(){
 
     joint -
         radius 0.5;
+        
 
     joint -
         radius 0.5;
+        select -r joint2 ;
+        move -r 0 1.499071 0 ;
+    
     
     joint -
         radius 0.5;
+        select -r joint3 ;
+        move -r 0 1.010973 0 ;
         
     joint -
         radius 0.5;
+        select -r joint4 ;
+        move -r 0 1.029695 0 ;
+    
+    select -r joint1 ;
+    searchReplaceNames "joint" "snow man jnt 0" "hierarchy";
+    
+    select -r snow_man_jnt_01;
+    select -tgl Body_Geo;
+    
+    bindSkin;
 
 }
 
+
+bodyBuilder();
+
+noseBuilder();
+
+faceBuilder();
+
+topHatBuilder();
+
+parentGeo();
+
 skeletonBuilder();
 
-//FIGURE OUT HOW TO GROUP GEO WITHOUT GROUPING THE BONES
-//FIX VERTEX MERGE ON BODY
-//CREATE BONES
-//BIND TO SKIN
+
+
+
 
