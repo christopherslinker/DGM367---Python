@@ -39,11 +39,11 @@ proc noseBuilder(){
         
     rename "pCylinder1" "Nose_Geo";
     
-    select -r "Nose_Geo";
-    select -r Nose_Geo.f[21];
-    scale -ws -r -p -7.45058e-09cm 2.5cm 0.75cm 0.25776 0.25776 0.25776;
+    select -replace "Nose_Geo";
+    select -replace Nose_Geo.f[21];
+    scale -worldSpace -relative -pivot -7.45058e-09cm 2.5cm 0.75cm 0.25776 0.25776 0.25776;
     
-    select -r "Nose_Geo";
+    select -replace "Nose_Geo";
     
     polySmooth;
     
@@ -60,20 +60,20 @@ proc faceBuilder(){
         scale 1 1 .5;
         
     polySphere -
-         radius 0.05; 
+        radius 0.05; 
         move 0.067 2.572 0.473;
         scale 1 1 .5;
         
-    select -r "pSphere1";
+    select -replace "pSphere1";
     rename "pSphere1" "Eye_Right_Geo";
     
-    select -r "pSphere2";
+    select -replace "pSphere2";
     rename "pSphere2" "Eye_Left_Geo";
     
-    select -r Eye_Right_Geo Eye_Left_Geo;
+    select -replace Eye_Right_Geo Eye_Left_Geo;
     DeleteHistory;
     
-    select -r Eye_Right_Geo Eye_Left_Geo;
+    select -replace Eye_Right_Geo Eye_Left_Geo;
     group;
     rename "group1" "Eyes_Geo";      
 }
@@ -90,14 +90,14 @@ proc topHatBuilder(){
             scale 1.5 .05 1.5;
             move 0 2.85 0;
             rotate 0 0 0;
-            ;
-        select -r pCylinder1 ;
+            
+        select -replace pCylinder1 ;
         rename "pCylinder1" "Hat_Top_Geo";
         
-        select -r pCylinder2;
+        select -replace pCylinder2;
         rename "pCylinder2" "Hat_Brim_Geo";
         
-        select -r Hat_Top_Geo Hat_Brim_Geo;
+        select -replace Hat_Top_Geo Hat_Brim_Geo;
 
         DeleteHistory;
         
@@ -106,17 +106,17 @@ proc topHatBuilder(){
         
         CenterPivot;
         
-        select -cl;
+        select -clear;
 }
 
 
 proc parentGeo(){
-    select -r Hat_Geo Eyes_Geo Nose_Geo ;
+    select -replace Hat_Geo Eyes_Geo Nose_Geo ;
     parent Hat_Geo Body_Geo ;
     parent Eyes_Geo Body_Geo ;
     parent Nose_Geo Body_Geo ;
     
-    select -cl;
+    select -clear;
 }
 
 //END OF GEO
@@ -130,25 +130,25 @@ proc skeletonBuilder(){
 
     joint -
         radius 0.5;
-        select -r joint2 ;
-        move -r 0 1.499071 0 ;
+        select -replace joint2 ;
+        move -relative 0 1.499071 0 ;
     
     
     joint -
         radius 0.5;
-        select -r joint3 ;
-        move -r 0 1.010973 0 ;
+        select -replace joint3 ;
+        move -relative 0 1.010973 0 ;
         
     joint -
         radius 0.5;
-        select -r joint4 ;
-        move -r 0 1.029695 0 ;
+        select -replace joint4 ;
+        move -relative 0 1.029695 0 ;
     
-    select -r joint1 ;
+    select -replace joint1 ;
     searchReplaceNames "joint" "snow man jnt 0" "hierarchy";
     
-    select -r snow_man_jnt_01;
-    select -tgl Body_Geo;
+    select -replace snow_man_jnt_01;
+    select -toggle Body_Geo;
     
     bindSkin;
 
