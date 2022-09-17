@@ -1,0 +1,35 @@
+float $baseSphere = 101;
+float $baseHat = 5;
+
+//Create the body
+polySphere -radius $baseSphere;
+move -relative 0 $baseSphere 0;
+
+polySphere -radius ($baseSphere*.5);
+move -relative 0 (($baseSphere*2) + ($baseSphere*.5)/1.25) 0;
+
+polySphere -radius ($baseSphere*.25);
+move -relative 0(($baseSphere*2)+($baseSphere*.5)+($baseSphere*.75)/1.25) 0;
+
+select -replace pSphere2 pSphere3 pSphere1;
+polyUnite -constructionHistory 1 -mergeUVSets 1 -centerPivot -name pSphere2 pSphere2 pSphere3 pSphere1;
+rename "Body_Geo";
+DeleteHistory;
+
+
+//Create the hat
+polyCylinder -radius (($baseHat*$baseSphere)/10) -height (($baseHat*.15*$baseSphere)/10);
+move -relative 0(($baseSphere*2)+($baseSphere*.5)+($baseSphere*.75)) 0;
+
+polyCylinder -radius (($baseHat*$baseSphere)/25) - height (($baseHat*.15*$baseSphere));
+move -relative 0(($baseSphere*2)+($baseSphere*.5)+($baseSphere)) 0;
+
+select -replace pCylinder2 pCylinder1;
+polyUnite -constructionHistory 1 -mergeUVSets 1 -centerPivot -name pCylinder2 pCylinder2 pCylinder1;
+rename "Hat_Geo";
+DeleteHistory;
+
+
+if($baseSphere > 42){
+    print("Nice");
+}

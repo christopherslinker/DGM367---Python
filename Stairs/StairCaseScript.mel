@@ -1,0 +1,19 @@
+    proc CreateStairCase(float $stairMaxHeight, int $placeStairHeight, float $stairLength, 
+    float $stairHeight, float $stairWidth, float $stairPivot, float $stairRotation)
+    {
+        for ($placeStairHeight; $placeStairHeight < $stairMaxHeight; $placeStairHeight++)
+        {
+            polyCube -width $stairLength -height $stairHeight -depth $stairWidth;
+            xform -pivots ($stairLength * $stairPivot) 0 0;
+            move -moveY $placeStairHeight;
+            move -moveX ($stairLength * .5);
+            rotate -rotateY ($placeStairHeight * $stairRotation);
+        }
+
+    polyCylinder -radius 0.3 -height $stairMaxHeight;
+    move -moveY ($stairMaxHeight * .5);
+
+    }
+
+    CreateStairCase(/*Max Height and Stair Count*/10, /* Placing Stair According to Height*/0, 
+    /*Stair Length*/5, /*Stair Height*/ .5, /* Stair Width */2, /*Stair Pivot*/-0.5, /*Stair Rotation*/ 25);
