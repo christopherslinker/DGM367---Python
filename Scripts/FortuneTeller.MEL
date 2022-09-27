@@ -1,0 +1,76 @@
+//FORTUNE TELLER
+
+
+
+//Generate random lottery numbers
+global proc string LotteryNumbers()
+{
+    int $values[];
+    for ($i=0; $i<7; $i++)
+    {
+        int $num = `rand 100`;
+        $values[size($values)] = $num;
+    }
+
+    return (intArrayToString($values, " - "));
+}
+
+
+global proc BestestFriend(string $name)
+{
+    string $names[] = {"Dave", "Doug", "Doug2", "Doug3", "Doug4", "Jerry"};
+    int $size = size($names);
+    int $randNum = `rand $size`;
+    print($name + ", your new bestest friend will be named " + $names[$randNum] + "!\n");
+}
+
+global proc Fortune()
+{
+    string $fortunes[] = {"Eat my shorts", "You will do something today", "Try again later", "You will order TacoBell and bring it back to me"};
+    int $randNum = `rand (size($fortunes))`;
+    print($fortunes[$randNum] + "!\n");
+}
+
+
+
+global proc string ZodiacSign(int $birthYear)
+{
+    // List of zodiac signs: rat, ox tiger, rabbit, dragon, snake, horse, sheep, monkey, rooster, dog, pig
+
+    string $signs[] = {"Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Sheep", "Monkey", "Rooster", "Dog", "Pig"};
+    int $index = ($birthYear - 4) % 12;
+
+    return $signs[$index];
+}
+
+
+global proc FortuneTeller(string $myName, int $myBirthYear, int $operation)
+{
+    if ($operation == 1)
+    {
+        print("Your lucky numbers for today are: " + LotteryNumbers() + "\n");
+    }
+
+    else if($operation == 2)
+    {
+        BestestFriend($myName);
+    }
+
+    else if ($operation ==3)
+    {
+        Fortune();
+    }
+
+    else if ($operation == 4)
+    {
+        print("Based on your birth year, " + $myBirthYear + " your zoadiac sign is " + ZodiacSign($myBirthYear));
+
+    }
+
+    else
+    {
+        print("Your future does not look bright, dummy. Try values 1 - 4.");
+    }
+}
+
+FortuneTeller(/*Your name*/"Doug", /*Your birth year*/ 1967, /*Opeartion number 1 - 4*/ 4);
