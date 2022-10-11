@@ -85,50 +85,101 @@ global proc float Median (float $input[])
         return $input[($inputLength)/2];
 }
 
-proc Calculator(float $input[], int $operation)
+global proc string Calculator(float $input[], string $operation)
 {
-    if ($operation == 1)
+    if ($operation == "Addition")
     {
-        print(Addition($input));
+        return(Addition($input));
     }
 
-    else if($operation == 2)
+    else if($operation == "Subtraction")
     {
-        print(Subtraction($input));
+        return(Subtraction($input));
     }
 
-    else if($operation == 3)
+    else if($operation == "Multiplication")
     {
-        print(Multiplication($input));
+        return(Multiplication($input));
     }
 
-    else if($operation == 4)
+    else if($operation == "Division")
     {
-        print(Division($input));
+        return(Division($input));
     }
 
-    else if($operation == 5)
+    else if($operation == "Power")
     {
-        print(Power($input));
+        return(Power($input));
     }
 
-    else if($operation == 6)
+    else if($operation == "Mean")
     {
-        print(Mean($input));
+        return(Mean($input));
     }
 
-    else if($operation == 7)
+    else if($operation == "Median")
     {
-        print(Mean($input));
+        return(Median($input));
     }
     
     else
     {
-        print("42 is the answer to everything.");
+        return("42 is the answer to everything.");
     }
 }
 
-Calculator(// Input Values Here:
+/*Calculator(// Input Values Here:
             {1,3,4,6}, 
             // Operation 1-7 Here:
-            8);
+            8);*/
+
+
+
+global proc Calc_ButtonCmd()
+{
+    string $operationField = `optionVar -q "cOperation"`;
+    string $resultsField = `optionVar -q "cResultField"`;
+    string $valueField = `optionVar -q "cValueField"`;
+    string $operation = `radioCollection -q -select $operationField`;
+    string $stringValues[] = stringToStringArray(`textField -q -text $valueField`," ");
+    float $values[];
+    for($stringValue in $stringValues)
+    {
+        float $value = $stringValue;
+        $values[size($values)] = $value;
+    }
+
+    string $result = Calculator($values, $operation);
+    textField -e -text $result $resultsField;
+}
+
+
+global proc CalculatorUI()
+{
+string $mWindow = "calcWindow";
+
+if(`window -exists $mWindow`)
+    deleteUI $mWindow;
+
+$mWindow = `window -title "Calculator"
+                    - widthHeight 300 400
+                    -resizeToFitChildren 1
+                    $mWindow`;
+string $mColumn = `columnLayout -parent $mWindow -adjustableColumn 1`;
+optionVar -stringValue "cValueField" `textField -parent $mColumn -placeholderText "Enter values here..."`;
+optionVar -stringValue "cOperation" `radioCollection -parent $mColumn`;
+radioButton -collection `optionVar -q "cOperation"` "Addition";
+radioButton -collection `optionVar -q "cOperation"` "Subtraction";
+radioButton -collection `optionVar -q "cOperation"` "Multiplication";
+radioButton -collection `optionVar -q "cOperation"` "Division";
+radioButton -collection `optionVar -q "cOperation"` "Power";
+radioButton -collection `optionVar -q "cOperation"` "Mean";
+radioButton -collection `optionVar -q "cOperation"` "Median";
+
+
+button -parent $mColumn -label "Equals" -command "Calc_ButtonCmd";
+optionVar -stringValue "cResultField" `textField -parent $mColumn -editable 0`;
+showWindow $mWindow;
+}
+
+CalculatorUI();

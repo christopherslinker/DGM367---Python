@@ -16,19 +16,19 @@ global proc string LotteryNumbers()
 }
 
 
-global proc BestestFriend(string $name)
+global  proc string BestestFriend(string $name)
 {
     string $names[] = {"Dave", "Doug", "Doug2", "Doug3", "Doug4", "Jerry"};
     int $size = size($names);
     int $randNum = `rand $size`;
-    print($name + ", your new bestest friend will be named " + $names[$randNum] + "!\n");
+    return($name + ", your new bestest friend will be named " + $names[$randNum] + "!\n");
 }
 
-global proc Fortune()
+global proc string Fortune()
 {
     string $fortunes[] = {"Eat my shorts", "You will do something today", "Try again later", "You will order TacoBell and bring it back to me"};
     int $randNum = `rand (size($fortunes))`;
-    print($fortunes[$randNum] + "!\n");
+    return($fortunes[$randNum] + "!\n");
 }
 
 
@@ -44,33 +44,72 @@ global proc string ZodiacSign(int $birthYear)
 }
 
 
-global proc FortuneTeller(string $myName, int $myBirthYear, int $operation)
+global  proc  string FortuneTeller(string $myName, int $myBirthYear, int $operation)
 {
     if ($operation == 1)
     {
-        print("Your lucky numbers for today are: " + LotteryNumbers() + "\n");
+        return ("Your lucky numbers for today are: " + LotteryNumbers() + "\n");
     }
 
     else if($operation == 2)
     {
-        BestestFriend($myName);
+        return (BestestFriend($myName));
     }
 
     else if ($operation ==3)
     {
-        Fortune();
+        return (Fortune());
     }
 
     else if ($operation == 4)
     {
-        print("Based on your birth year, " + $myBirthYear + " your zoadiac sign is " + ZodiacSign($myBirthYear));
+        return ("Based on your birth year, " + $myBirthYear + " your zoadiac sign is " + ZodiacSign($myBirthYear));
 
     }
 
     else
     {
-        print("Your future does not look bright, dummy. Try values 1 - 4.");
+        return ("Your future does not look bright, dummy. Try values 1 - 4.");
     }
 }
 
-FortuneTeller(/*Your name*/"Doug", /*Your birth year*/ 1967, /*Opeartion number 1 - 4*/ 4);
+//FortuneTeller(/*Your name*/"Doug", /*Your birth year*/ 1967, /*Opeartion number 1 - 4*/ 4);
+
+global proc FT_ButtonCmd()
+{
+    string $nameField = `optionVar -q "ftNameField"`;
+    string $yearField = `optionVar -q "ftYearField"`;
+    string $operationField = `optionVar -q "ftOperation"`;
+    string $resultsField = `optionVar -q "ftResult"`;
+
+    string $name = `textField -q -text $nameField`;
+    string $year = `intField -q -value $yearField`;
+    string $operation = `radioButtonGrp -q -select $operationField`;
+
+    string $result = FortuneTeller($name, $year, $operation);
+    textField -e -text $result $resultsField;
+}
+
+
+global proc FortuneUI()
+{
+string $mWindow = "ftWindow";
+
+if(`window -exists $mWindow`)
+    deleteUI $mWindow;
+
+$mWindow = `window -title "Fortune Teller"
+                    - widthHeight 300 400
+                    -resizeToFitChildren 1
+                    $mWindow`;
+string $mColumn = `columnLayout -parent $mWindow -adjustableColumn 1`;
+optionVar -stringValue "ftNameField" `textField -parent $mColumn -placeholderText "Enter name here..."`;
+optionVar -stringValue "ftYearField" `intField -parent $mColumn`;
+optionVar -stringValue "ftOperation" `radioButtonGrp -parent $mColumn -numberOfRadioButtons 4 -labelArray4 "Lucky Numbers" "Best Friend" "Fortune Cookie" "Zodiac Sign"`;
+button -parent $mColumn -label "Go!" -command "FT_ButtonCmd";
+optionVar -stringValue "ftResult" `textField -parent $mColumn -editable 0`;
+showWindow $mWindow;
+}
+
+FortuneUI();
+
