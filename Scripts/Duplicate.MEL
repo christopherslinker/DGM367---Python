@@ -1,0 +1,74 @@
+   global proc float DuplicateMesh(int $duplicateCount, float $xMax, float $xMin, float $yMax, float $yMin, float $zMax, float $zMin)
+    {
+
+        float $duplicate = $duplicateCount;
+    for($i =1; $i < $duplicateCount; $i++)
+    {
+        $xRange = `rand $xMin $xMax`;
+        $yRange = `rand $yMin $yMax`;
+        $zRange = `rand $zMin $zMax`;
+        duplicate; 
+        move -worldSpace $xRange $yRange $zRange;
+    }
+
+    return $duplicate;
+
+    }
+
+    //DuplicateMesh(5, 0, 1, 4, 7, 3, 8);
+
+
+global proc Duplicate_ButtonCmd()
+{
+    string $duplicateField = `optionVar -q "duplicateCountField"`;
+    string $xMinField = `optionVar -q "d_xMinField"`;
+    string $xMaxField = `optionVar -q "d_xMaxField"`;
+    string $yMinField = `optionVar -q "d_yMinField"`;
+    string $yMaxField = `optionVar -q "d_yMaxField"`;
+    string $zMinField = `optionVar -q "d_zMinField"`;
+    string $zMaxField = `optionVar -q "d_zMaxField"`;
+
+    int $duplicateCount = `intField -q -value $duplicateField`;
+    float $xMin = `floatField -q -value $xMinField`;
+    float $xMax = `floatField -q -value $xMaxField`;
+    float $yMin = `floatField -q -value $yMinField`;
+    float $yMax = `floatField -q -value $yMaxField`;
+    float $zMin = `floatField -q -value $zMinField`;
+    float $zMax = `floatField -q -value $zMaxField`;
+    
+    DuplicateMesh($duplicateCount, $xMin, $xMax, $yMin, $yMax, $zMin, $zMax);
+}
+
+
+global proc DuplicateUI()
+{
+string $mWindow = "duplicateWindow";
+
+if(`window -exists $mWindow`)
+    deleteUI $mWindow;
+
+$mWindow = `window -title "Random Duplciate"
+                    - widthHeight 300 400
+                    -resizeToFitChildren 1
+                    $mWindow`;
+
+    string $mColumn = `columnLayout -parent $mWindow -adjustableColumn 1`;
+    textField -editable 0  -text "Number of Duplications:";
+    optionVar -stringValue "duplicateCountField" `intField -value 5 -parent $mColumn`;
+    textField -editable 0  -text "X Min Value:";
+    optionVar -stringValue "d_xMinField" `floatField -value -10 -parent $mColumn`;
+    textField -editable 0  -text "X Max Value:";
+    optionVar -stringValue "d_xMaxField" `floatField -value 10 -parent $mColumn`;
+    textField -editable 0  -text "Y Min Value:";
+    optionVar -stringValue "d_yMinField" `floatField -value -10 -parent $mColumn`;
+    textField -editable 0  -text "Y Max Value:";
+    optionVar -stringValue "d_yMaxField" `floatField -value 10 -parent $mColumn`;
+    textField -editable 0  -text "Z Min Value:";
+    optionVar -stringValue "d_zMinField" `floatField -value -10 -parent $mColumn`;
+    textField -editable 0  -text "Z Max Value:";
+    optionVar -stringValue "d_zMaxField" `floatField -value 10 -parent $mColumn`;
+    button -parent $mColumn -label "Duplicate" -command "Duplicate_ButtonCmd";
+    showWindow $mWindow;
+}
+
+DuplicateUI();
