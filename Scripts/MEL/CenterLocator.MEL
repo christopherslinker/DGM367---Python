@@ -1,0 +1,13 @@
+proc CenterLocator()
+{
+    string $selectName[] = `ls -sl`;
+    string $clusterName[] =`cluster`;
+    select -add $selectName;
+    xform -cp;
+    spaceLocator -name "locator";
+    matchTransform locator $clusterName;
+    delete  $clusterName;
+    
+}
+
+CenterLocator();

@@ -1,0 +1,10 @@
+string $selection [] = `ls -sl`;
+string $retCls[] = `cluster $selection`;
+select -cl;
+string $retLoc[] = `spaceLocator`;
+delete `pointConstraint $retCls[1] $retLoc[0]`;
+delete $retCls;
+
+setAttr ($retLoc[0] + ".localScaleX") 0.15;
+setAttr ($retLoc[0] + ".localScaleY") 0.15;
+setAttr ($retLoc[0] + ".localScaleZ") 0.15;
