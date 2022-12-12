@@ -1,0 +1,15 @@
+import maya.cmds as cmds
+
+
+def rename():
+    selectionInput = input()
+    inputName = selectionInput
+    selection = cmds.ls(sl=True)
+    if len(selection) <= 0:
+        print("Please Select Your Objects")
+    else:
+        for i in selection
+            cmds.rename(inputName)
+
+
+rename()
