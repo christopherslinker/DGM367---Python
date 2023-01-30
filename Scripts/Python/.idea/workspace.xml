@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d3e7915b-ad90-46a4-b721-cbe60832b85c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ColorChanger.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Renamer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JointFKIK.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pythonTest" beforeDir="false" afterPath="$PROJECT_DIR$/pythonTest" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,6 +54,10 @@
       <workItem from="1667105003200" duration="249000" />
       <workItem from="1670645646524" duration="7035000" />
       <workItem from="1670823834214" duration="6218000" />
+      <workItem from="1670831073467" duration="60000" />
+      <workItem from="1671129489766" duration="75000" />
+      <workItem from="1671129606973" duration="601000" />
+      <workItem from="1671165712467" duration="1455000" />
     </task>
     <servers />
   </component>
